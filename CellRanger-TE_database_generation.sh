@@ -20,7 +20,7 @@ usage()
 
 if ! command -v ${DTOOL} &> /dev/null
 then
-    DTOOL="curll"
+    DTOOL="curl"
     if ! command -v ${DTOOL} &> /dev/null
     then
        echo "Neither wget or curl are installed. Please ensure a command-line tool for downloading from URL is install" >&2
