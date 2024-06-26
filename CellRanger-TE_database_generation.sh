@@ -28,8 +28,6 @@ then
     fi
 fi
 
-exit 0
-
 # Check for required arguments
 
 ARGS=$(getopt -o "g:r:" -- "$@")
