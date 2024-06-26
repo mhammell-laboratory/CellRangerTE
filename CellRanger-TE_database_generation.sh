@@ -4,6 +4,7 @@
 
 GENOME=""
 RELEASE=""
+DTOOL="wget"
 
 # Usage message
 
@@ -14,6 +15,20 @@ usage()
     echo "    default release verson is 35 (human) and M26 (mouse)" >&2
     exit 1
 }
+
+# Check that either wget or curl is installed
+
+if ! command -v ${DTOOL} &> /dev/null
+then
+    DTOOL="curll"
+    if ! command -v ${DTOOL} &> /dev/null
+    then
+       echo "Neither wget or curl are installed. Please ensure a command-line tool for downloading from URL is install" >&2
+       usage
+    fi
+fi
+
+exit 0
 
 # Check for required arguments
 
@@ -95,7 +110,7 @@ fi
 GCURL="${GCURL}/release_${RELEASE}"
 
 # Download primary assembly of genome sequence from GENCODE
-wget "${GCURL}/${GENOME}.primary_assembly.genome.fa.gz"
+${DTOOL} "${GCURL}/${GENOME}.primary_assembly.genome.fa.gz"
 if [ $? -ne 0 ]; then
     echo "Error downloading FASTA" >&2
 fi
@@ -103,7 +118,7 @@ fi
 FASTA="${GENOME}.primary_assembly.genome.fa.gz"
 
 # Download GENCODE primary assembly, comprehensive annotation GTF from GENCODE
-wget "${GCURL}/gencode.v${RELEASE}.primary_assembly.annotation.gtf.gz"
+${DTOOL} "${GCURL}/gencode.v${RELEASE}.primary_assembly.annotation.gtf.gz"
 
 if [ $? -ne 0 ]; then
     echo "Error downloading gene GTF" >&2
@@ -114,7 +129,11 @@ GTF_IN="gencode.v${RELEASE}.primary_assembly.annotation.gtf.gz"
 # Download TE GTF from Molly Hammell lab website
 TE_IN="${GENOME}_GENCODE_rmsk_TE.gtf.gz"
 
-wget -O "${TE_IN}" "${TEURL}"
+if [ "${DTOOL}" == "wget" ]; then
+    ${DTOOL} -O "${TE_IN}" "${TEURL}"
+else
+    ${DTOOL} -o "${TE_IN}" "${TEURL}"
+fi
 
 if [ $? -ne 0 ]; then
     echo "Error downloading TE GTF" >&2
