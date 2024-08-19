@@ -113,7 +113,8 @@ if [ $? -ne 0 ]; then
     echo "Error downloading FASTA" >&2
 fi
 
-FASTA="${GENOME}.primary_assembly.genome.fa.gz"
+gunzip "${GENOME}.primary_assembly.genome.fa.gz"
+FASTA="${GENOME}.primary_assembly.genome.fa"
 
 # Download GENCODE primary assembly, comprehensive annotation GTF from GENCODE
 ${DTOOL} "${GCURL}/gencode.v${RELEASE}.primary_assembly.annotation.gtf.gz"
