@@ -12,7 +12,7 @@ usage()
 {
     echo "sh $0 -g [genome build] -r [release version]" >&2
     echo "    genome build: GRCh38 or GRCm39" >&2
-    echo "    default release verson is 35 (human) and M26 (mouse)" >&2
+    echo "    default release version is 35 (human) and M26 (mouse)" >&2
     exit 1
 }
 
