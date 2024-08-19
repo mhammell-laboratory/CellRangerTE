@@ -114,6 +114,10 @@ if [ $? -ne 0 ]; then
 fi
 
 gunzip "${GENOME}.primary_assembly.genome.fa.gz"
+if [ $? -ne 0 ]; then
+    echo "Error decompressing FASTA" >&2
+fi
+
 FASTA="${GENOME}.primary_assembly.genome.fa"
 
 # Download GENCODE primary assembly, comprehensive annotation GTF from GENCODE
