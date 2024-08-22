@@ -257,7 +257,7 @@ cat "${GTF_FILTERED}" "${TE_FILTERED}" > "${COMBINED_GTF}"
 
 ## Build the custom Cell Ranger reference database
 
-cellranger mkref --genome="${GENOME}_GCv${RELEASE}_TE" --fasta="${FASTA}" --genes="${COMBINED_GTF}" --memgb=80 --nthreads=10
+cellranger mkref --genome="${GENOME}_GCv${RELEASE}_TE" --fasta="${FASTA}" --genes="${COMBINED_GTF}" --memgb=250 --nthreads=10
 
 if [ $? -ne 0 ]; then
     echo "Error building database" >&2

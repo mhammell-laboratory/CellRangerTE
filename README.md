@@ -18,3 +18,7 @@ sh CellRanger-TE_database_generation.sh -g [genome build] -r [release version]
     default release version is 35 (human) and M26 (mouse)
 ```
 Please note that GENCODE release 20 (human) and M26 (mouse) are the oldest releases corresponding to GRCh38 and GRCm39 respectively. Specifying older GENCODE releases will throw an error.
+
+## CPU and memory usage
+
+We recommend providing 10 CPU/cores and 250Gb of memory to ensure successful completion of the script.
