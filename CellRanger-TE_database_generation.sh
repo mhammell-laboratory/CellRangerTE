@@ -103,6 +103,15 @@ else
     fi
 fi
 
+# Create build directory
+BUILD="${GENOME}_GCv${RELEASE}_CRTE_build"
+if [ -d "${BUILD}" ]; then
+    rm -r "${BUILD}"
+fi
+mkdir "${BUILD}"
+
+cd "${BUILD}"
+
 # setup URL and download log
 GCURL="${GCURL}/release_${RELEASE}"
 DLOG="${GENOME}_r${RELEASE}_download.log"
@@ -248,14 +257,7 @@ cat "${GTF_FILTERED}" "${TE_FILTERED}" > "${COMBINED_GTF}"
 
 ## Build the custom Cell Ranger reference database
 
-BUILD="${GENOME}_GCv${RELEASE}_TE_build"
-if [ -d "${BUILD}" ]; then
-    rm -r "${BUILD}"
-fi
-mkdir "${BUILD}"
-
-cd "${BUILD}"
-cellranger mkref --genome="${GENOME}_GCv${RELEASE}_TE" --fasta="../${FASTA}" --genes="../${COMBINED_GTF}" --memgb=80 --nthreads=10
+cellranger mkref --genome="${GENOME}_GCv${RELEASE}_TE" --fasta="${FASTA}" --genes="${COMBINED_GTF}" --memgb=80 --nthreads=10
 
 if [ $? -ne 0 ]; then
     echo "Error building database" >&2
@@ -263,5 +265,4 @@ fi
 
 cd ..
 mv "${BUILD}/${GENOME}_GCv${RELEASE}_TE" .
-rm -r "${BUILD}"
 echo "All steps completed" >&2
