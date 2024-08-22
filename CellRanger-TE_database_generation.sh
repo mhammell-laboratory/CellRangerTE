@@ -103,12 +103,12 @@ else
     fi
 fi
 
-# setup URL
-
+# setup URL and download log
 GCURL="${GCURL}/release_${RELEASE}"
+DLOG="${GENOME}_r${RELEASE}_download.log"
 
 # Download primary assembly of genome sequence from GENCODE
-${DTOOL} "${GCURL}/${GENOME}.primary_assembly.genome.fa.gz"
+${DTOOL} "${GCURL}/${GENOME}.primary_assembly.genome.fa.gz" 2>"${DLOG}"
 if [ $? -ne 0 ]; then
     echo "Error downloading FASTA" >&2
 fi
@@ -121,7 +121,7 @@ fi
 FASTA="${GENOME}.primary_assembly.genome.fa"
 
 # Download GENCODE primary assembly, comprehensive annotation GTF from GENCODE
-${DTOOL} "${GCURL}/gencode.v${RELEASE}.primary_assembly.annotation.gtf.gz"
+${DTOOL} "${GCURL}/gencode.v${RELEASE}.primary_assembly.annotation.gtf.gz" 2>>"${DLOG}"
 
 if [ $? -ne 0 ]; then
     echo "Error downloading gene GTF" >&2
@@ -133,9 +133,9 @@ GTF_IN="gencode.v${RELEASE}.primary_assembly.annotation.gtf.gz"
 TE_IN="${GENOME}_GENCODE_rmsk_TE.gtf.gz"
 
 if [ "${DTOOL}" == "wget" ]; then
-    ${DTOOL} -O "${TE_IN}" "${TEURL}"
+    ${DTOOL} -O "${TE_IN}" "${TEURL}" 2>>"${DLOG}"
 else
-    ${DTOOL} -o "${TE_IN}" "${TEURL}"
+    ${DTOOL} -o "${TE_IN}" "${TEURL}" 2>>"${DLOG}"
 fi
 
 if [ $? -ne 0 ]; then
@@ -247,10 +247,21 @@ COMBINED_GTF="${GENOME}_GCv${RELEASE}_TE.gtf"
 cat "${GTF_FILTERED}" "${TE_FILTERED}" > "${COMBINED_GTF}"
 
 ## Build the custom Cell Ranger reference database
-cellranger mkref --genome="${GENOME}_GCv${RELEASE}_TE" --fasta="${FASTA}" --genes="${COMBINED_GTF}" --memgb=40 --nthreads=10
+
+BUILD="${GENOME}_GCv${RELEASE}_TE_build"
+if [ -d "${BUILD}" ]; then
+    rm -r "${BUILD}"
+fi
+mkdir "${BUILD}"
+
+cd "${BUILD}"
+cellranger mkref --genome="${GENOME}_GCv${RELEASE}_TE" --fasta="../${FASTA}" --genes="../${COMBINED_GTF}" --memgb=80 --nthreads=10
 
 if [ $? -ne 0 ]; then
     echo "Error building database" >&2
-else
-    echo "All steps completed"
 fi
+
+cd ..
+mv "${BUILD}/${GENOME}_GCv${RELEASE}_TE" .
+rm -r "${BUILD}"
+echo "All steps completed" >&2
