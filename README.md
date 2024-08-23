@@ -5,7 +5,7 @@ It takes the GENCODE FASTA and gene annotations, filters them according to the i
 
 This is currently only available for mouse (GRCm39) and human (GRCh38).
 
-[Molly Gale Hammell Lab](https://www.mghlab.org/software)
+Website: [Molly Gale Hammell Lab](https://www.mghlab.org/software)
 
 Contact: mghcompbio@gmail.com
 
