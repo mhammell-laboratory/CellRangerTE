@@ -100,6 +100,7 @@ if [ "${GENOME}" == "GRCm39" ]; then
 else
     if [ "${RELEASE}" -lt "20" ]; then
 	echo "GENCODE human releae ${RELEASE} is not for GRCh38, but an older genome build. Please specify a later release" >&2
+	usage
     fi
 fi
 
@@ -120,11 +121,13 @@ DLOG="${GENOME}_r${RELEASE}_download.log"
 ${DTOOL} "${GCURL}/${GENOME}.primary_assembly.genome.fa.gz" 2>"${DLOG}"
 if [ $? -ne 0 ]; then
     echo "Error downloading FASTA" >&2
+    exit 1
 fi
 
 gunzip "${GENOME}.primary_assembly.genome.fa.gz"
 if [ $? -ne 0 ]; then
     echo "Error decompressing FASTA" >&2
+    exit 1
 fi
 
 FASTA="${GENOME}.primary_assembly.genome.fa"
@@ -134,6 +137,7 @@ ${DTOOL} "${GCURL}/gencode.v${RELEASE}.primary_assembly.annotation.gtf.gz" 2>>"$
 
 if [ $? -ne 0 ]; then
     echo "Error downloading gene GTF" >&2
+    exit 1
 fi
 
 GTF_IN="gencode.v${RELEASE}.primary_assembly.annotation.gtf.gz"
@@ -149,6 +153,7 @@ fi
 
 if [ $? -ne 0 ]; then
     echo "Error downloading TE GTF" >&2
+    exit 1
 fi
 
 # Remove version suffix from transcript, gene, and exon IDs in order to match
@@ -171,6 +176,7 @@ zcat "${GTF_IN}" \
 
 if [ $? -ne 0 ]; then
     echo "Error fixing gene GTF" >&2
+    exit 1
 fi
 
 ## Define string patterns for GTF tags
@@ -219,6 +225,7 @@ cat "${GTF_MOD}" \
 
 if [ $? -ne 0 ]; then
     echo "Error creating allowed list" >&2
+    exit 1
 fi
 
 ## Filter the GTF file based on the gene allowlist
@@ -233,6 +240,7 @@ grep -Ff "${ALLOWLIST}" "${GTF_MOD}" \
 
 if [ $? -ne 0 ]; then
     echo "Error filtering GTF" >&2
+    exit 1
 fi
 
 ## Remove intermediate files
@@ -248,6 +256,7 @@ zcat "${TE_IN}" | sort -k1,1 | join -t "	" -j 1 "${CHRFILES}" - > "${TE_FILTERED
 
 if [ $? -ne 0 ]; then
     echo "Error filtering TE GTF" >&2
+    exit 1
 fi
 
 
@@ -261,8 +270,12 @@ cellranger mkref --genome="${GENOME}_GCv${RELEASE}_TE" --fasta="${FASTA}" --gene
 
 if [ $? -ne 0 ]; then
     echo "Error building database" >&2
+    cd ..
+    exit 1
+else
+    cd ..
+    mv "${BUILD}/${GENOME}_GCv${RELEASE}_TE" .
+    echo "All steps completed" >&2
 fi
 
-cd ..
-mv "${BUILD}/${GENOME}_GCv${RELEASE}_TE" .
-echo "All steps completed" >&2
+
