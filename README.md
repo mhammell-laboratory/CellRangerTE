@@ -5,6 +5,9 @@ It takes the GENCODE FASTA and gene annotations, filters them according to the i
 
 This is currently only available for mouse (GRCm39) and human (GRCh38).
 
+[MHammell Lab](https://www.mghlab.org/software)
+Contact: mghcompbio@gmail.com
+
 ## Requirements
 
 - [Cell Ranger software](https://www.10xgenomics.com/support/software/cell-ranger/latest)
@@ -22,3 +25,15 @@ Please note that GENCODE release 20 (human) and M26 (mouse) are the oldest relea
 ## CPU and memory usage
 
 We recommend providing 10 CPU/cores and 250Gb of memory to ensure successful completion of the script.
+
+## Copying & distribution
+
+CellRangerTE is free softrware: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but *WITHOUT ANY WARRANTY*; without even the implied warranty of *MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE*.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with TEtranscripts.  If not, see [this website](http://www.gnu.org/licenses/).
+
+## Citation
+
+Available soon...
