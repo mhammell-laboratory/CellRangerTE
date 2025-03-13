@@ -37,4 +37,4 @@ You should have received a copy of the GNU General Public License along with TEt
 
 ## Citation
 
-Available soon...
+O'Neill K. et al. (2025)  Cell Rep. PMID: [40067829](https://pubmed.ncbi.nlm.nih.gov/40067829/)
