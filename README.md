@@ -1,5 +1,5 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14750680.svg)](https://doi.org/10.5281/zenodo.14750680)
-[![Pubmed](https://img.shields.io/badge/pubmed-40067829-blue)](https://pubmed.ncbi.nlm.nih.gov/40067829/)
+[![Pubmed](https://img.shields.io/badge/Pubmed-40067829-blue?logo=pubmed)](https://pubmed.ncbi.nlm.nih.gov/40067829/)
 ![GitHub License](https://img.shields.io/github/license/mhammell-laboratory/CellRangerTE)
 
 # CellRangerTE
